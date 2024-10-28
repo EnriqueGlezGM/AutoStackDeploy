@@ -111,7 +111,11 @@ resource "openstack_compute_instance_v2" "s1" {
   }
   user_data = <<-EOT
   #!/bin/bash
-  echo "S1 launched by Terraform" > /info.txt
+  apt-get update
+  apt-get install -y nginx
+  systemctl enable nginx
+  systemctl start nginx
+  echo "S1 Web Server running" > /var/www/html/index.html
   EOT
 }
 
@@ -129,7 +133,11 @@ resource "openstack_compute_instance_v2" "s2" {
   }
   user_data = <<-EOT
   #!/bin/bash
-  echo "S2 launched by Terraform" > /info.txt
+  apt-get update
+  apt-get install -y nginx
+  systemctl enable nginx
+  systemctl start nginx
+  echo "S2 Web Server running" > /var/www/html/index.html
   EOT
 }
 
@@ -147,7 +155,11 @@ resource "openstack_compute_instance_v2" "s3" {
   }
   user_data = <<-EOT
   #!/bin/bash
-  echo "S3 launched by Terraform" > /info.txt
+  apt-get update
+  apt-get install -y nginx
+  systemctl enable nginx
+  systemctl start nginx
+  echo "S3 Web Server running" > /var/www/html/index.html
   EOT
 }
 
@@ -207,13 +219,13 @@ resource "openstack_lb_loadbalancer_v2" "lb" {
 resource "openstack_lb_listener_v2" "lb_listener" {
   name            = "listener_http"
   loadbalancer_id = openstack_lb_loadbalancer_v2.lb.id
-  protocol        = "HTTP"
+  protocol        = "TCP"
   protocol_port   = 80
 }
 
 resource "openstack_lb_pool_v2" "lb_pool" {
   name         = "backend_pool"
-  protocol     = "HTTP"
+  protocol     = "TCP"
   lb_method    = "ROUND_ROBIN"
   listener_id  = openstack_lb_listener_v2.lb_listener.id
 }
@@ -225,4 +237,26 @@ resource "openstack_networking_floatingip_v2" "lb_floating_ip" {
 resource "openstack_networking_floatingip_associate_v2" "lb_floating_ip_assoc" {
   floating_ip = openstack_networking_floatingip_v2.lb_floating_ip.address
   port_id     = openstack_lb_loadbalancer_v2.lb.vip_port_id
+}
+
+# Definir miembros del balanceador de carga
+resource "openstack_lb_member_v2" "lb_member_s1" {
+  pool_id       = openstack_lb_pool_v2.lb_pool.id
+  address       = openstack_compute_instance_v2.s1.network.0.fixed_ip_v4
+  protocol_port = 80
+  subnet_id     = openstack_networking_subnet_v2.subnet1.id
+}
+
+resource "openstack_lb_member_v2" "lb_member_s2" {
+  pool_id       = openstack_lb_pool_v2.lb_pool.id
+  address       = openstack_compute_instance_v2.s2.network.0.fixed_ip_v4
+  protocol_port = 80
+  subnet_id     = openstack_networking_subnet_v2.subnet1.id
+}
+
+resource "openstack_lb_member_v2" "lb_member_s3" {
+  pool_id       = openstack_lb_pool_v2.lb_pool.id
+  address       = openstack_compute_instance_v2.s3.network.0.fixed_ip_v4
+  protocol_port = 80
+  subnet_id     = openstack_networking_subnet_v2.subnet1.id
 }
