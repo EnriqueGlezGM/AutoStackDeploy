@@ -10,6 +10,29 @@ resource "openstack_compute_secgroup_v2" "http" {
   }
 }
 
+# Open Apache2 port
+resource "openstack_compute_secgroup_v2" "ssh" {
+  name        = "ssh"
+  description = "Open input ssh port"
+  rule {
+    from_port   = 22
+    to_port     = 22
+    ip_protocol = "tcp"
+    cidr        = "0.0.0.0/0"
+  }
+}
+
+resource "openstack_compute_secgroup_v2" "ssh_admin" {
+  name        = "ssh"
+  description = "Open input ssh port and scp"
+  rule {
+    from_port   = 2022
+    to_port     = 2022
+    ip_protocol = "tcp"
+    cidr        = "0.0.0.0/0"
+  }
+}
+
 resource "openstack_networking_secgroup_v2" "my_security_group" {
  name = "open"
  description = "Grupo de Seguridad para permitir todo el trafico"

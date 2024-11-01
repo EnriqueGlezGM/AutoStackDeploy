@@ -35,6 +35,7 @@ resource "openstack_networking_port_v2" "port_net1" {
   }
   security_group_ids = [
     openstack_compute_secgroup_v2.http.id,
+    openstack_compute_secgroup_v2.ssh.id,
   ]
 }
 
@@ -61,6 +62,12 @@ resource "openstack_compute_instance_v2" "admin" {
   image_name  = var.image
   flavor_name = var.flavor
   key_pair    = openstack_compute_keypair_v2.user_key.name
+  user_data = <<-EOF
+  #cloud-config
+  runcmd:
+  - sed -i 's/#Port 22/Port 2022/' /etc/ssh/sshd_config
+  - systemctl restart sshd.service
+  EOF
   network {
     port = openstack_networking_port_v2.port_net1_admin.id
   }
@@ -78,7 +85,7 @@ resource "openstack_networking_port_v2" "port_net1_admin" {
     subnet_id = openstack_networking_subnet_v2.subnet1.id
   }
   security_group_ids = [
-    openstack_compute_secgroup_v2.http.id,
+    openstack_compute_secgroup_v2.ssh_admin.id,
   ]
 }
 
@@ -91,7 +98,7 @@ resource "openstack_networking_port_v2" "port_net2_admin" {
     subnet_id = openstack_networking_subnet_v2.subnet2.id
   }
   security_group_ids = [
-    openstack_compute_secgroup_v2.http.id,
+    openstack_compute_secgroup_v2.ssh_admin.id,
   ]
 }
 
