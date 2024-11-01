@@ -1,6 +1,6 @@
 #!/bin/bash
 # root@10.0.0.12 debido al cambio en hosts que impide usar root@terraform
-ssh -o "StrictHostKeyChecking no" root@10.0.0.12 'ssh-keygen -t rsa -b 2048 -f ~/.ssh/my_new_key -N ""'
+ssh -o "StrictHostKeyChecking no" root@10.0.0.12 'ssh-keygen -t rsa -b 2048 -f ~/.ssh/mykey -N ""'
 
 scp $HOME/Desktop/AutoStackDeploy/recursos_tf/* root@10.0.0.12:~
 ls /mnt/tmp/openstack_lab-antelope_4n_classic_ovs-v04/shared
