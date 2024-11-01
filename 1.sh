@@ -17,11 +17,11 @@ ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa" -N "" -y
 # Usar expect para automatizar ssh-copy-id
 /usr/bin/expect <<EOF
 set timeout -1
-spawn ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@terraform
+spawn ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@10.0.0.12
 expect "password:"
 send "xxxx\r"
 expect eof
 EOF
 
 # Verificar acceso SSH y ejecutar comando en el servidor remoto
-ssh -o "StrictHostKeyChecking no" root@terraform 'terraform --version'
+ssh -o "StrictHostKeyChecking no" root@10.0.0.12 'terraform --version'
