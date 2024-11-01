@@ -1,5 +1,6 @@
 # AutoStackDeploy
-Despliegue automático de una aplicación escalable sobre una nube OpenStack utilizando los servicios de orquestación de Terraform
+Despliegue automático de una aplicación escalable sobre una nube OpenStack utilizando los servicios de orquestación de Terraform. 
+Diseño inspirado en [terraform-openstack-examples](https://github.com/diodonfrost/terraform-openstack-examples/tree/5c527d8628de68d1a8ab3c05184d8b310d5f14aa/04-instance-with-loadbalancer)
 
 ## Como utilizar un repositorio privado
 
