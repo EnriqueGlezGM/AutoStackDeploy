@@ -1,13 +1,7 @@
 #!/bin/bash
-#source /mnt/tmp/openstack_lab-antelope_4n_classic_ovs-v04/bin/admin-openrc.sh
-#for i in $(seq 1 6); do
-#  echo S$i
-#  openstack keypair create s$i
-#done
-#echo BBDD
-#openstack keypair create bbdd
-#echo ADMIN
-#openstack keypair create admin
+# root@10.0.0.12 debido al cambio en hosts que impide usar root@terraform
+ssh -o "StrictHostKeyChecking no" root@10.0.0.12 'ssh-keygen -t rsa -b 2048 -f ~/.ssh/my_new_key -N ""'
+
 scp $HOME/Desktop/AutoStackDeploy/recursos_tf/* root@10.0.0.12:~
 ls /mnt/tmp/openstack_lab-antelope_4n_classic_ovs-v04/shared
 ssh -o "StrictHostKeyChecking no" root@10.0.0.12 'terraform init'

@@ -13,10 +13,10 @@ variable "external_network" {
 }
 
 # UUID of external gateway
-variable "external_gateway" {
-  type    = string
-  default = "d30e48f6-7be9-4e66-8c25-146ee075217d"
-}
+#variable "external_gateway" {
+#  type    = string
+#  default = "d30e48f6-7be9-4e66-8c25-146ee075217d"
+#}
 
 variable "dns_ip" {
   type    = list(string)

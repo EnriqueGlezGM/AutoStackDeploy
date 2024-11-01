@@ -1,9 +1,13 @@
 #### NETWORK CONFIGURATION ####
 
+data "openstack_networking_network_v2" "extnet" {
+  name = "ExtNet"
+}
+
 # Router creation
 resource "openstack_networking_router_v2" "r1" {
   name                = "r1"
-  external_network_id = var.external_gateway
+  external_network_id = data.openstack_networking_network_v2.extnet.id
 }
 
 # Network creation

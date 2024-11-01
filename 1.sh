@@ -15,9 +15,10 @@ sudo vnx -f openstack_lab-terraform.xml -x install-terraform
 ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa" -N "" -y
 
 # Usar expect para automatizar ssh-copy-id
+# root@10.0.0.12 debido al cambio en hosts que impide usar root@terraform
 /usr/bin/expect <<EOF
 set timeout -1
-spawn ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@10.0.0.12
+spawn ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@10.0.0.12 
 expect "password:"
 send "xxxx\r"
 expect eof
