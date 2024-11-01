@@ -61,7 +61,6 @@ resource "openstack_compute_instance_v2" "admin" {
   image_name  = var.image
   flavor_name = var.flavor
   key_pair    = openstack_compute_keypair_v2.user_key.name
-  user_data   = file("scripts/first-boot.sh")
   network {
     port = openstack_networking_port_v2.port_net1_admin.id
   }
