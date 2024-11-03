@@ -12,8 +12,13 @@ admin_ip=$(openstack server show admin -c addresses -f value | grep -oP "'net1':
 # Condicional para realizar la conexión adecuada
 if [ "$instance_name" == "admin" ]; then
     # Conéctate solo a admin
-    ssh -i mykey root@$admin_ip -p 2022
+    ssh -t -i mykey root@$admin_ip -p 2022
 else
+    if [ "$instance_name" == "BBDD" ]; then
+    	server_id=$(openstack server show BBDD -c id -f value)
+    	port_id=$(openstack port show port-net1-BBDD -c id -f value)
+    	openstack server add port $server_id $port_id
+    fi
     # Si se proporciona un nombre de instancia, obtener su IP flotante y hacer SSH a admin y luego a la instancia
     floating_ip=$(openstack server show "$instance_name" -c addresses -f value | grep -oP "(?<='net1': \[')[^']+")
     
