@@ -21,7 +21,7 @@ cd $HOME/Desktop/AutoStackDeploy
 ./2.sh
 ```
 
-## Destruir del escenario
+## Destrucción del escenario
 ```bash
 cd $HOME/Desktop/AutoStackDeploy
 ./destroy.sh
